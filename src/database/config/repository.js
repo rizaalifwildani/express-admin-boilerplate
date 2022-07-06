@@ -2,7 +2,7 @@
 class Repository {
   /**
    * @param {Model} model
-   * @param {Array<Model>} relationModel array relation name such as packages.
+   * @param {Array<String>} relationModel array relation name such as packages.
   */
   constructor(model, relationModel) {
     this.model = model
@@ -20,6 +20,30 @@ class Repository {
     }).then((res) => res).catch((err) => {
       console.log('Error :', err)
       return []
+    })
+  }
+
+  /**
+   * @param {int} limit
+   * @param {int} page
+   * @param {Object} where
+   * @return {Promise} array
+  */
+  async findAllAndPaginate(limit, page, where) {
+    const _limit = limit ? parseInt(limit) : 10
+    const _page = page ? parseInt(page) : 1
+    let _offset = 0
+    if (page > 1) {
+      _offset = _page * _limit
+    }
+    return this.model.findAndCountAll({
+      include: this.relationModel,
+      where,
+      limit: _limit,
+      offset: _offset,
+    }).then((res) => res).catch((err) => {
+      console.log('Error :', err)
+      return null
     })
   }
 

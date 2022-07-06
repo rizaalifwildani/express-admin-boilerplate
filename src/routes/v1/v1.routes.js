@@ -3,7 +3,9 @@ const express = require('express')
 const router = express.Router()
 const AUTH = require('../../middleware/auth.middleware')
 const auth = require('./auth.routes')
-const user = require('./user.routes.js')
+const admin = require('./admin.routes.js')
+const role = require('./role.routes.js')
+const SUPERADMIN = require('../../middleware/superadmin.middleware')
 
 /**
  * @swagger
@@ -16,9 +18,17 @@ router.use('/auth', auth)
 /**
  * @swagger
  * tags:
- *  name: User v1
- *  description: API User v1 (With Authentication)
+ *  name: Admin v1
+ *  description: API Admin v1 (Only SUPERADMIN Role)
  */
-router.use('/users', AUTH, user)
+router.use('/admins', [AUTH, SUPERADMIN], admin)
+
+/**
+ * @swagger
+ * tags:
+ *  name: Role v1
+ *  description: API Role v1 (Only SUPERADMIN Role)
+ */
+router.use('/roles', [AUTH, SUPERADMIN], role)
 
 module.exports = router

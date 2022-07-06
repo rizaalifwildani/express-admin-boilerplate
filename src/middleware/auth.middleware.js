@@ -1,5 +1,5 @@
 const httpStatus = require('http-status')
-const userRepository = require('../database/repositories/user.repository')
+const adminRepository = require('../database/repositories/admin.repository')
 const JWT = require('../helper/jwt.helper')
 const Response = require('../helper/response.helper')
 
@@ -7,8 +7,8 @@ const AUTH = async (req, res, next) => {
   const data = JWT.getData(req)
   let authorize = false
   if (data) {
-    const user = await userRepository.findByID(data.id)
-    if (user && user.expiryToken > 0) {
+    const admin = await adminRepository.findByID(data.id)
+    if (admin && admin.expiryToken > 0) {
       authorize = true
     }
   }

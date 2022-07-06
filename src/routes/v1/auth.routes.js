@@ -2,108 +2,23 @@ const express = require('express')
 const router = express.Router()
 const GUEST = require('../../middleware/guest.middleware')
 const AUTH = require('../../middleware/auth.middleware')
-const registerValidation = require('../../http/requests/validations/register.validation')
-const getValidationResult = require('../../http/requests/validations/validation.result')
 const AuthController = require('../../http/controllers/v1/auth.controller')
 
 /**
  * @swagger
  * components:
  *  schemas:
- *    UserRegister:
- *      type: object
- *      properties:
- *        firstName:
- *          type: string
- *          required: true
- *          description: The first name of the user
- *        lastName:
- *          type: string
- *          description: The last name of the user
- *        email:
- *          required: true
- *          type: string
- *          description: The email of the user
- *        phone:
- *          required: true
- *          type: string
- *          description: The phone of the user
- *        password:
- *          required: true
- *          type: string
- *          description: The password of the user
- *      example:
- *        id: a9e8fb35-b502-4b03-9b19-30552d8df3ca
- *        firstName: Jhon
- *        lastName: Doe
- *        email: jhon@example.com
- *        phone: "+6285920616342"
- *        password: password
- */
-
-/**
- * @swagger
- * /api/v1/auth/register:
- *  post:
- *    parameters:
- *      - in: header
- *        name: Origin
- *        required: true
- *        type: string
- *        example: http://localhost:5003
- *    summary: Register for New User (Guest)
- *    tags: [Auth v1]
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            items:
- *              $ref: '#/components/schemas/UserRegister'
- *            example:
- *              id: a9e8fb35-b502-4b03-9b19-30552d8df3ca
- *              firstName: Jhon
- *              lastName: Doe
- *              email: jhon@example.com
- *              phone: "+6285920616342"
- *              password: password
- *    responses:
- *      201:
- *        description: Registration Success
- *        content:
- *          application/json:
- *            schema:
- *              properties:
- *                token:
- *                  type: string
- *              example:
- *                token: sdasasjd11231dasda
- *      422:
- *        description: Unresponsible entitiy
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/UnprocessibleEntity'
- */
-router.post('/register', GUEST, registerValidation(), getValidationResult, AuthController.register)
-
-/**
- * @swagger
- * components:
- *  schemas:
- *    UserLogin:
+ *    AdminLogin:
  *      type: object
  *      properties:
  *        email:
  *          required: true
  *          type: string
- *          description: The email of the user
+ *          description: The email of the admin
  *        password:
  *          required: true
  *          type: string
- *          description: The password of the user
+ *          description: The password of the admin
  *      example:
  *        email: jhon@example.com
  *        password: password
@@ -118,7 +33,7 @@ router.post('/register', GUEST, registerValidation(), getValidationResult, AuthC
  *        name: Origin
  *        required: true
  *        type: string
- *        example: http://localhost:5003
+ *        example: http://localhost:5001
  *    summary: Login (Guest)
  *    tags: [Auth v1]
  *    requestBody:
@@ -127,7 +42,7 @@ router.post('/register', GUEST, registerValidation(), getValidationResult, AuthC
  *        application/json:
  *          schema:
  *            items:
- *              $ref: '#/components/schemas/UserLogin'
+ *              $ref: '#/components/schemas/AdminLogin'
  *          example:
  *            email: jhon@example.com
  *            password: password
@@ -165,7 +80,7 @@ router.post('/login', GUEST, AuthController.login)
  *        name: Origin
  *        required: true
  *        type: string
- *        example: http://localhost:5003
+ *        example: http://localhost:5001
  *    summary: Logout for current session
  *    tags: [Auth v1]
  *    responses:
@@ -198,18 +113,18 @@ router.patch('/logout', AUTH, AuthController.logout)
  *        name: Origin
  *        required: true
  *        type: string
- *        example: http://localhost:5003
- *    summary: Return the object of core web
+ *        example: http://localhost:5001
+ *    summary: Return the object of admin
  *    tags: [Auth v1]
  *    responses:
  *      200:
- *        description: the object of user
+ *        description: the object of admin
  *        content:
  *          application/json:
  *            schema:
  *              type: object
  *              items:
- *                $ref: '#/components/schemas/User'
+ *                $ref: '#/components/schemas/Admin'
  *              example:
  *                id: a9e8fb35-b502-4b03-9b19-30552d8df3ca
  *                firstName: Jhon

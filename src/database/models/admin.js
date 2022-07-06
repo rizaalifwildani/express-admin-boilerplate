@@ -1,23 +1,27 @@
 'use strict'
 const {
-  DataTypes,
   Model,
 } = require('sequelize')
-const uuid = require('uuid')
 const PASSWORD = require('../../helper/password.helper')
-module.exports = (sequelize, dt) => {
+module.exports = (sequelize, DataTypes) => {
   /**
    * @extends Model
    */
-  class User extends Model {
+  class Admin extends Model {
     /**
      * @param {Model} models
      */
     static associate(models) {
-      // define association here
+      Admin.belongsTo(models.Role, {
+        foreignKey: 'roleId',
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE',
+        as: 'role',
+      })
     }
   }
-  User.init({
+  Admin.init({
+    roleId: DataTypes.UUID,
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
     phone: DataTypes.STRING,
@@ -35,7 +39,7 @@ module.exports = (sequelize, dt) => {
       },
     },
     sequelize,
-    modelName: 'User',
+    modelName: 'Admin',
   })
-  return User
+  return Admin
 }

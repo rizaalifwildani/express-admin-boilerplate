@@ -9,6 +9,25 @@ const v1 = require('./v1/v1.routes')
  * @swagger
  * components:
  *  schemas:
+ *    Response:
+ *      properties:
+ *        data:
+ *          type: object
+ *          description: The response data
+ *        pagination:
+ *          type: object
+ *          description: only shown when data is pagination
+ *        header:
+ *          type: object
+ *          description: The response header like status or message
+ *      example:
+ *        data: null,
+ *        pagination: null,
+ *        header: {
+ *          status: 200,
+ *          message: "Success",
+ *        }
+ *
  *    UnprocessibleEntity:
  *      properties:
  *        value:
