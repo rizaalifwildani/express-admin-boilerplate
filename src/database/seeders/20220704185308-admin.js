@@ -16,7 +16,7 @@ module.exports = {
       firstName: 'Riza',
       lastName: 'Alif',
       phone: '+6285920616342',
-      email: 'rizaalif@bukaanime.com',
+      email: 'admin@app.com',
       password: PASSWORD.generate('password'),
       createdAt: new Date(),
       updatedAt: new Date(),

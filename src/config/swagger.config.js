@@ -4,7 +4,7 @@ const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'BukaAnime - Admin Library API',
+      title: 'Express - Library API',
       version: '1.0.0',
       description: 'Admin API Documentation',
     },
