@@ -48,7 +48,7 @@ describe('AuthController', () => {
           message: expect.any(String)
         })
       )
-      
+
       // === ME ===
       const me = await request(app)
         .get('/api/v1/auth/me')
