@@ -24,109 +24,90 @@ const app = require('../config/app.config')
 // })
 
 describe('AuthController', () => {
-  it('register', async () => {
+  it('login -> me -> logout', async () => {
     const formData = {
-      firstName: 'Jhon',
-      lastName: 'Doe',
-      phone: '+6285920616342',
-      email: 'jhon@example.com',
+      email: 'admin@app.com',
       password: 'password',
     }
 
-    const res = await request(app)
-      .post('/api/v1/auth/register')
-      .send(formData)
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-    if (res.status === httpStatus.UNPROCESSABLE_ENTITY) {
-      expect(res.body.data).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            value: expect.any(String),
-            msg: expect.any(String),
-            param: expect.any(String),
-            location: expect.any(String),
-          })
-        ])
-      )
-      expect.objectContaining({
-        status: httpStatus.UNPROCESSABLE_ENTITY,
-        message: expect.any(String)
-      })
-    } else if (res.status === httpStatus.CREATED) {
-      expect(res.body.data).toEqual(
-        expect.objectContaining({
-          token: expect.any(String)
-        })
-      )
-      expect(res.body.header).toEqual(
-        expect.objectContaining({
-          status: httpStatus.CREATED,
-          message: expect.any(String)
-        })
-      )
-    } else {
-      expect(res.body.data).toBeNull()
-      expect(res.body.header).toEqual(
-        expect.objectContaining({
-          status: httpStatus.BAD_REQUEST,
-          message: expect.any(String)
-        })
-      )
-    }
-  })
-
-  it('login', async () => {
-    const formData = {
-      email: 'jhon@example.com',
-      password: 'jhondoe123',
-    }
-
-    const res = await request(app)
+    // === LOGIN ===
+    const login = await request(app)
       .post('/api/v1/auth/login')
       .send(formData)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-    if (res.status === httpStatus.OK) {
-      expect(res.body.data).toEqual(
+    if (login.status === httpStatus.OK) {
+      expect(login.body.data).toEqual(
         expect.objectContaining({
           token: expect.any(String)
         })
       )
-      expect(res.body.header).toEqual(
+      expect(login.body.header).toEqual(
         expect.objectContaining({
           status: httpStatus.OK,
           message: expect.any(String)
         })
       )
+      
+      // === ME ===
+      const me = await request(app)
+        .get('/api/v1/auth/me')
+        .set('Authorization', `Bearer ${login.body.data.token}`)
+        .expect('Content-Type', /json/)
+      if (me.status === httpStatus.OK) {
+        expect(me.body.data).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            firstName: expect.any(String),
+            lastName: expect.any(String),
+            email: expect.any(String),
+            phone: expect.any(String),
+          })
+        )
+        expect(me.body.header).toEqual(
+          expect.objectContaining({
+            status: httpStatus.OK,
+            message: expect.any(String)
+          })
+        )
+      } else {
+        expect(me.body.data).toBeNull()
+        expect(me.body.header).toEqual(
+          expect.objectContaining({
+            status: httpStatus.UNAUTHORIZED,
+            message: expect.any(String)
+          })
+        )
+      }
+
+      // === LOGOUT ===
+      const logout = await request(app)
+        .patch('/api/v1/auth/logout')
+        .set('Authorization', `Bearer ${login.body.data.token}`)
+        .expect('Content-Type', /json/)
+      if (logout.status === httpStatus.OK) {
+        expect(logout.body.data).toBeTruthy()
+        expect(logout.body.header).toEqual(
+          expect.objectContaining({
+            status: httpStatus.OK,
+            message: expect.any(String)
+          })
+        )
+      } else {
+        expect(logout.body.data).toBeNull()
+        expect(logout.body.header).toEqual(
+          expect.objectContaining({
+            status: httpStatus.UNAUTHORIZED,
+            message: expect.any(String)
+          })
+        )
+      }
+
     } else {
-      expect(res.body.data).toBeNull()
-      expect(res.body.header).toEqual(
+      expect(login.body.data).toBeNull()
+      expect(login.body.header).toEqual(
         expect.objectContaining({
           status: httpStatus.UNPROCESSABLE_ENTITY,
-          message: expect.any(String)
-        })
-      )
-    }
-  })
-
-  it('logout', async () => {
-    const res = await request(app)
-      .patch('/api/v1/auth/logout')
-      .expect('Content-Type', /json/)
-    if (res.status === httpStatus.OK) {
-      expect(res.body.data).toBeNull()
-      expect(res.body.header).toEqual(
-        expect.objectContaining({
-          status: httpStatus.OK,
-          message: expect.any(String)
-        })
-      )
-    } else {
-      expect(res.body.data).toBeNull()
-      expect(res.body.header).toEqual(
-        expect.objectContaining({
-          status: httpStatus.UNAUTHORIZED,
           message: expect.any(String)
         })
       )

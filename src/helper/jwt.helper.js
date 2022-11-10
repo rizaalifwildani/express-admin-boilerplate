@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const {User} = require('../database/models/index')
+const {Admin} = require('../database/models/index')
 
 /** */
 class JWT {
@@ -52,9 +52,9 @@ class JWT {
   static async destroyToken(req) {
     const data = this.getData(req)
     if (data) {
-      const user = await User.findByPk(data.id)
-      user.expiryToken = 0
-      user.save()
+      const admin = await Admin.findByPk(data.id)
+      admin.expiryToken = 0
+      admin.save()
       return true
     }
     return false

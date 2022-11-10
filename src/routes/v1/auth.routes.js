@@ -131,8 +131,8 @@ router.patch('/logout', AUTH, AuthController.logout)
  *                lastName: Doe
  *                email: jhon@example.com
  *                phone: "+6285920616342"
- *      404:
- *        description: Not Found
+ *      401:
+ *        description: Unauthorized
  *        content:
  *          application/json:
  *            schema:
