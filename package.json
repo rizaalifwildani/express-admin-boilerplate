@@ -1,7 +1,7 @@
 {
-  "name": "express-api",
+  "name": "express-admin-api",
   "version": "1.0.0",
-  "description": "API With Node js & Express",
+  "description": "Admin API With Node js & Express",
   "main": "server.js",
   "author": "Riza Alif Wildani",
   "license": "MIT",

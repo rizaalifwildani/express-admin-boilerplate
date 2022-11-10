@@ -6,7 +6,7 @@ const swaggerOptions = {
     info: {
       title: 'Express - Library API',
       version: '1.0.0',
-      description: 'Admin API Documentation',
+      description: 'Express Admin API Documentation',
     },
   },
   apis: [

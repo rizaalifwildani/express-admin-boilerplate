@@ -13,10 +13,11 @@ This is a [Node JS](https://nodejs.org) boilerplate with [`Express`](https://exp
 - postman collection `https://www.getpostman.com/collections/83b0c662b9cf84f1a89b`
 
 ## Feature
-- Register
 - Login
 - Logout
 - Profile
+- Role
+- List Admin
 - Logger
 - Unit Testing
 - Scheduler (Backup DB)
